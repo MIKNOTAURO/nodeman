@@ -1,5 +1,11 @@
 var express = require('express');
 var people  = express();
+
+// view engine
+people.set('view engine', 'jade');
+people.set('view options', {layout:true});
+people.set('views', __dirname + '/views');
+
 // views case
 people.get('/people/:name?', function(req, resp, next){
     var name = req.params.name;
@@ -8,9 +14,9 @@ people.get('/people/:name?', function(req, resp, next){
         case 'django':
         case 'bob':
         case 'mezzanine':
-            resp.send(name +' is family');
+            // 'people' name view, {name:name} value(s)
+            resp.render('people', {name : name});
             break;
-        
         default:
             next();
     }
@@ -21,7 +27,7 @@ people.get('/people/*?', function(req, resp){
 });
 
 people.get('/?', function(req, resp){
-    resp.send('welcome family');   
+    resp.send('<h1>Welcome family</h1>');   
 });
 
 // configure server
